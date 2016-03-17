@@ -8,27 +8,27 @@ layout: compress
     h10{
 font-size: 5vw; color: white; position:absolute; top:50%;left:50%;transform:translate(-50%,-50%);
     }
-       h10:link {
+       a:link {
        color: white;
-       text-decoration: none;
+       text-decoration: none; !important
        }
-       h10:visited {
+       a:visited {
        text-decoration: none;
-       color: #000000;
+       color: #000000; !important
        }
-       h10:hover {
+       a:hover {
        text-decoration: none;
-       text-shadow: 3px 5px 10px #000;
+       text-shadow: 3px 5px 10px #000; !important
        }
-       h10:active {
+       a:active {
        text-decoration: none;
-       color: #FF0000;
+       color: #FF0000; !important
        }
     </style>
 
     <body>
         <div style="width: 100%; height: 100%; overflow: hidden; background-image:url(https://dn-ssl-v6-res-dandyweng.qbox.me/images/header-background.jpg)">
-        <h10 href="/home.html">我是Damon Chen</h10>
+        <a href="/home.html">我是Damon Chen</a>
         </div>
         {% include scripts.html %}
     </body>
