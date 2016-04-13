@@ -59,6 +59,66 @@ mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 6.实现地图圆角效果：使用圆角.9图片，中间透明，圆角四周不透明<br>
 详细可以看这个提问：http://stackoverflow.com/questions/14469208/is-there-a-way-to-implement-rounded-corners-to-a-mapfragment
 
+7.去掉google地图自带的蓝色圆点
+GoogleMap.setMyLocationEnabled(false);
+
+8.解决mapview与scrollview嵌套滑动的问题：
+思路就是使用getParent().requestDisallowInterceptTouchEvent(true);方法，让子类接收到touch事件
+
+代码：
+{%highlight java%}
+public class MyMapView extends MapView {
+    private ViewParent mViewParent;
+
+    public MyMapView(Context context) {
+        super(context);
+    }
+
+    public MyMapView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+    }
+
+    public MyMapView(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+    }
+
+    public MyMapView(Context context, GoogleMapOptions options) {
+        super(context, options);
+    }
+
+
+    public void setViewParent(@Nullable final ViewParent viewParent) { //any ViewGroup
+        mViewParent = viewParent;
+    }
+
+    @Override
+    public boolean onInterceptTouchEvent(final MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                if (null == mViewParent) {
+                    //设置父类不拦截touch事件，子view可以接收到touch事件
+                    getParent().requestDisallowInterceptTouchEvent(true);
+                } else {
+                    mViewParent.requestDisallowInterceptTouchEvent(true);
+                }
+                break;
+            case MotionEvent.ACTION_UP:
+                if (null == mViewParent) {
+                    //让父类拦截touch事件
+                    getParent().requestDisallowInterceptTouchEvent(false);
+                } else {
+                    mViewParent.requestDisallowInterceptTouchEvent(false);
+                }
+                break;
+            default:
+                break;
+        }
+
+        return super.onInterceptTouchEvent(event);
+    }
+}
+{%endhighlight %}  
+
 
 ### 3.在真机上测试效果
 需要在真机上安装这两个包：com.android.vending.apk（Google play store）和com.google.android.gms.apk（Google play services）
