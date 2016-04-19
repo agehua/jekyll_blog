@@ -27,7 +27,7 @@ iCCP: Not recognizing known sRGB profile： http://www.bigademo.com/iccp-not-rec
 大项目中遇到的问题看这个博客，http://www.cnblogs.com/yaozhongxiao/p/3521428.html
 
 
-##add() vs. replace()
+###add() vs. replace()
 只有在Fragment数量大于等于2的时候，调用add()还是replace()的区别才能体现出来。当通过add()连续两次添加Fragment的时候，每个Fragment生命周期中的onAttach()-onResume()都会被各调用一次，而且两个Fragment的View会被同时attach到containerView。
 
 同样，退出Activty时，每个Fragment生命周期中的onPause()-onDetach()也会被各调用一次。
@@ -42,7 +42,7 @@ remove()
 其实看完上面的分析，remove()方法基本也就明白了。相对应add()方法执行onAttach()-onResume()的生命周期，remove()就是完成剩下的onPause()-onDetach()周期。
 
 
-##FragmentTransaction add 和 replace 区别
+###FragmentTransaction add 和 replace 区别
 使用 FragmentTransaction 的时候，它提供了这样两个方法，一个 add ， 一个 replace .
 
 add 和 replace 影响的只是界面，而控制回退的，是事务。
