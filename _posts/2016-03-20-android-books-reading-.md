@@ -74,12 +74,12 @@ Intent中如果有category那么所有的category都必须和过滤规则中的�
 data的结构很复杂，语法大致如下：
 {%highlight javascript %}
 <data android:scheme="string"
-android:host="string"
-android:port="string"
-android:path="string"
-android:pathPattern="string"
-android:pathPrefix="string"
-android:mimeType="string" />
+	android:host="string"
+	android:port="string"
+	android:path="string"
+	android:pathPattern="string"
+	android:pathPrefix="string"
+	android:mimeType="string" />
 {%endhighlight %}  
 主要由mimeType和URI组成，其中mimeType代表媒体类型，而URI的结构也复杂，大致如下：
 <scheme>://<host>:<port>/[<path>]|[<pathPrefix>]|[pathPattern]
