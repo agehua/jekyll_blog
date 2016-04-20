@@ -1,8 +1,8 @@
 ---
 layout: post
-title: android facebook google+地方三登录实现
-category: technology
-tags: 技术
+title: android facebook google+ 三方登录实现
+category: accumulation
+tags: 积累
 keywords: android, google map
 description: google map2.0使用总结
 ---
