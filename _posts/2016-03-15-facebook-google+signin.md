@@ -61,3 +61,12 @@ replace 是先remove掉相同id的所有fragment，然后在add当前的这个fr
 
 而至于返回键的时候，这个跟事务有关，跟使用add还是replace没有任何关系。
 
+###要想fragment完整地执行生命周期
+fragment跳转是要使用replace()方法，并指定tag，例如：
+{%highlight java %}
+getFragmentManager()
+ 	.beginTransaction()
+    .replace(R.id.base_container,
+    	 inputVerifyCodeFragment,"tag_code")
+    .addToBackStack(null).commit();
+{%endhighlight %}
