@@ -1,6 +1,6 @@
 ---
 layout: post
-title: android facebook google+ 三方登录实现
+title: android facebook google+ 登录总结+fragment使用总结
 category: accumulation
 tags: 积累
 keywords: android, google map
@@ -11,23 +11,21 @@ description: google map2.0使用总结
 {:toc}
 
 ### 1.相关资料
-blog:http://www.cnblogs.com/lngg057/p/5020192.html
+blog: http://www.cnblogs.com/lngg057/p/5020192.html
+
 g+start: https://developers.google.com/identity/sign-in/android/start
+
 facebook start: https://developers.facebook.com/docs/android/getting-started
 
 iCCP: Not recognizing known sRGB profile： http://www.bigademo.com/iccp-not-recognizing-known-srgb-profile/
-
 
 今天做分享的时候遇到了这个问题：
 [2016-04-01 11:24:04 - Dex Loader] Unable to execute dex: method ID not in [0, 0xffff]: 65536
 [2016-04-01 11:24:04 - VIVAT_SHARESDK] Conversion to Dalvik format failed: Unable to execute dex: method ID not in [0, 0xffff]: 65536
 
-吓死宝宝了，方法太多了。。。。
-
 大项目中遇到的问题看这个博客，http://www.cnblogs.com/yaozhongxiao/p/3521428.html
 
-
-###add() vs. replace()
+### 2.add() vs. replace()
 只有在Fragment数量大于等于2的时候，调用add()还是replace()的区别才能体现出来。当通过add()连续两次添加Fragment的时候，每个Fragment生命周期中的onAttach()-onResume()都会被各调用一次，而且两个Fragment的View会被同时attach到containerView。
 
 同样，退出Activty时，每个Fragment生命周期中的onPause()-onDetach()也会被各调用一次。
@@ -42,7 +40,7 @@ remove()
 其实看完上面的分析，remove()方法基本也就明白了。相对应add()方法执行onAttach()-onResume()的生命周期，remove()就是完成剩下的onPause()-onDetach()周期。
 
 
-###FragmentTransaction add 和 replace 区别
+### 3.FragmentTransaction add 和 replace 区别
 使用 FragmentTransaction 的时候，它提供了这样两个方法，一个 add ， 一个 replace .
 
 add 和 replace 影响的只是界面，而控制回退的，是事务。
@@ -61,7 +59,7 @@ replace 是先remove掉相同id的所有fragment，然后在add当前的这个fr
 
 而至于返回键的时候，这个跟事务有关，跟使用add还是replace没有任何关系。
 
-###要想fragment完整地执行生命周期
+###	4.要想fragment完整地执行生命周期
 fragment跳转是要使用replace()方法，并一定要指定tag，否则有些方法不会执行（比如onResume），例如：
 {%highlight java %}
 getFragmentManager()
@@ -70,3 +68,6 @@ getFragmentManager()
     	 inputVerifyCodeFragment,"tag_code")
     .addToBackStack(null).commit();
 {%endhighlight %}
+
+### 5.fragment事件穿透
+如果发现fragment2的点击事件可以被fragment栈下一层的fragment1获取到，可以在fragment2布局的根部加上：android:clickable="true"。问题解决
