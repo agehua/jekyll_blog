@@ -27,7 +27,7 @@ gcm personal demo: https://github.com/iammert/FastGCM
 stackoverflow上有人问过这个问题：http://stackoverflow.com/questions/13835676/google-cloud-messaging-messages-sometimes-not-received-until-network-state-cha
 
 
-## 2.onActivityResult()和onResume()调用顺序
+## 3.onActivityResult()和onResume()调用顺序
 API中这样描述：当你一个Activity是以请求码开始，结束时返回给前页面结果码，页面根据结果码进行相应的信息处理。我们会在返回的页面先接受结果码，然后才调用onResume()。
 
 通常我们还会遇到这样一个问题：
