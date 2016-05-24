@@ -107,7 +107,7 @@ Java中定义的方法 :
     APP_STL := stlport_static
 	APP_ABI := all
 
- ![这是工程的目录结构]({{ site.url }}/assets/img/jni_structure.png)
+ ![这是工程的目录结构]({{ site.url }}/assets/img/jni_structure.png =338x)
 
 这篇文章是使用javah导出头文件，常见错误和解决办法，这里做一个简单的记录：http://blog.csdn.net/hejinjing_tom_com/article/details/8125648
 
