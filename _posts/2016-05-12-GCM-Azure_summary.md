@@ -22,7 +22,7 @@ gcm official demo: https://github.com/google/gcm
 gcm personal demo: https://github.com/iammert/FastGCM
 
 ### 2.遇到的问题
-## 1.手机运行官方demo时，发送消息，消息收不到必须切换一下网络才可以
+- 1.手机运行官方demo时，发送消息，消息收不到必须切换一下网络才可以
 
 stackoverflow上有人问过这个问题：http://stackoverflow.com/questions/13835676/google-cloud-messaging-messages-sometimes-not-received-until-network-state-cha
 
