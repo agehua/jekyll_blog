@@ -100,7 +100,9 @@ Java中定义的方法 :
 静态库引入 : NDK的platform中有很多 ".a" 结尾的动态库, 我们编译动态库的时候, 可以将一些静态库引入进来;
 
 - d. 生成 动态库 so 文件 : 进入 Android.mk 所在目录, 在该目录执行ndk下的ndk-build命令;
-- e. Java代码加载动态库 : 在 Java 代码中调用该类的类前面, 在类的一开始, 不在方法中, 加入 static{ System.loadLibrary("hello"); } ;
+- e. Java代码加载动态库 : 在 Java 代码中调用该类的类前面, 在类的一开始, 不在方法中, 加入 
+
+    static{ System.loadLibrary("hello"); } ;
 
  Android.mk 文件内容为（不写这个文件也可以）: 
 
