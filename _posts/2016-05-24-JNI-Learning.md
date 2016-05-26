@@ -218,8 +218,8 @@ JNI方法 : jint Java_shuliang_han_Hello_hello(JNIEnv * env, jobject clazz, jstr
 
 ### 6.AES加密实现
 网上有几种AES实现的方式：
--  1.这个是我现在项目中使用的方法，在Github上有这个工程，这种方式是使用JNI生成一个与设备相关的密码，可以将该密码作为AES的密钥。链接地址：https://github.com/MasonLiuChn/AndroidUltimateEncrypt
--  2.网上还有一种方式是由JNI生成keyValue和iv，Java层使用：
+- 1.这个是我现在项目中使用的方法，在Github上有这个工程，这种方式是使用JNI生成一个与设备相关的密码，可以将该密码作为AES的密钥。链接地址：https://github.com/MasonLiuChn/AndroidUltimateEncrypt
+- 2.网上还有一种方式是由JNI生成keyValue和iv，Java层使用：
 
     static {
     	System.loadLibrary("cwtlib");
@@ -246,12 +246,17 @@ JNI方法 : jint Java_shuliang_han_Hello_hello(JNIEnv * env, jobject clazz, jstr
 
 这种方式，在android app程序完全退出后，再进入该app时，之前加密好的字符串无法解密。
 
--  3.还有一种是直接由C或C++实现AES整个算法，网上代码并不靠谱
+- 3.还有一种是直接由C或C++实现AES整个算法，网上代码并不知道靠不靠谱
 
 所以，android上最好还是使用第一种方法
 
+### 7.JNI混淆问题
 
+    -keep class com.your.jnicallback.class { *; }
+    -keepclasseswithmembernames class * {
+        native <methods>;
+    }
 
-### 7.总结
+### 8.总结
 android 实现JNI入门并不难，笔者也刚刚入门，但要深入了解还是需要很长的路要走。
 
