@@ -252,6 +252,10 @@ JNI方法 : jint Java_shuliang_han_Hello_hello(JNIEnv * env, jobject clazz, jstr
 
 ### 7.JNI混淆问题
 
+检查下 C/C++代码中没有直接访问Java代码的类或者类的成员变量、类的成员函数。
+如果有的话，这些就不能混淆
+
+
     -keep class com.your.jnicallback.class { *; }
     -keepclasseswithmembernames class * {
         native <methods>;
