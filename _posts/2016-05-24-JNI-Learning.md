@@ -218,7 +218,9 @@ JNI方法 : jint Java_shuliang_han_Hello_hello(JNIEnv * env, jobject clazz, jstr
 
 ### 6.AES加密实现
 网上有几种AES实现的方式：
+
 - 1.这个是我现在项目中使用的方法，在Github上有这个工程，这种方式是使用JNI生成一个与设备相关的密码，可以将该密码作为AES的密钥。链接地址：https://github.com/MasonLiuChn/AndroidUltimateEncrypt
+
 - 2.网上还有一种方式是由JNI生成keyValue和iv，Java层使用：
 
     static {
@@ -256,7 +258,9 @@ JNI方法 : jint Java_shuliang_han_Hello_hello(JNIEnv * env, jobject clazz, jstr
 如果有的话，这些就不能混淆
 
 
+    //保留jni的回调类
     -keep class com.your.jnicallback.class { *; }
+    //这个不用更改，直接复制就可以
     -keepclasseswithmembernames class * {
         native <methods>;
     }
