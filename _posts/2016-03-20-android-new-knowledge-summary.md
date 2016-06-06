@@ -16,6 +16,7 @@ Nexus 6 有 493 ppi，它刚好在 xxhdpi和xxxhdpi之间，所以显示的时�
 ### setTranslucentStatus()方法
 在Android4.4之后使用沉浸式状态栏，需要用到这个方法
 {%highlight java%}
+
 public class MainActivity extends Activity
 {
     @Override

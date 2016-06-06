@@ -109,7 +109,7 @@ Java中定义的方法 :
     APP_STL := stlport_static
 	APP_ABI := all
 
-![](./assets/img/jni_structure.png  =338x461)
+![]({{ site.url }}/assets/img/jni_structure.png  =338x461)
 
 这篇文章是使用javah导出头文件，常见错误和解决办法，这里做一个简单的记录：http://blog.csdn.net/hejinjing_tom_com/article/details/8125648
 
@@ -156,38 +156,38 @@ if (alen > 0) {
 
 - Jstring2CStr方法讲解 : 
    - a. 获取Java中String类型的class对象 : 参数 : 上下文环境 env, String类完整路径 ;
-
+{%highlight java%}
     jclass clsstring = (*env)->FindClass(env, "java/lang/String");  
-    
+{%endhighlight %}    
    - b.创建Java字符串 : 使用 NewStringUTF 方法;
-   
+{%highlight java%}
     jstring strencode = (*env)->NewStringUTF(env, "GB2312");  
-    
+{%endhighlight %}    
    - c.获取String中的getBytes()方法 : 参数介绍 ① env 上下文环境 ② 完整的类路径 ③ 方法名 ④ 方法签名, 方法签名 Ljava/lang/String; 代表参数是String字符串, [B  中括号表示这是一个数组, B代表byte类型, 返回值是一个byte数组;
-   
+{%highlight java%}
     jmethodID mid = (*env)->GetMethodID(env, clsstring, "getBytes",  
         "(Ljava/lang/String;)[B");  
-        
+{%endhighlight %}        
    - d. 获取数组的长度 : 
-
+{%highlight java%}
     jsize alen = (*env)->GetArrayLength(env, barr);  
-    
+{%endhighlight %}   
    - e. 获取数组元素 : 获取数组中的所有的元素 , 存放在 jbyte*数组中;
-
+{%highlight java%}
     jbyte* ba = (*env)->GetByteArrayElements(env, barr, JNI_FALSE);  
-
+{%endhighlight %}
    - f.数组拷贝: 将Java数组中所有元素拷贝到C的char*数组中, 注意C语言数组结尾要加一个 '\0';
-
+{%highlight java%}
     if (alen > 0) {  
         rtn = (char*) malloc(alen + 1); //new   char[alen+1]; "\0"  
         memcpy(rtn, ba, alen);  
         rtn[alen] = 0;  
     }  
-    
+{%endhighlight %}    
    - g.释放内存 : 
-
+{%highlight java%}
     (*env)->ReleaseByteArrayElements(env, barr, ba, 0); //释放内存 
-
+{%endhighlight %}
 ### 5.JNI方法命名规则(标准JNI规范)
 
 - JNI实现的方法 与 Java中Native方法的映射关系 : 使用方法名进行映射, 可以使用 javah 工具进入 bin/classes 目录下执行命令, 即可生成头文件;
@@ -222,7 +222,7 @@ JNI方法 : jint Java_shuliang_han_Hello_hello(JNIEnv * env, jobject clazz, jstr
 - 1.这个是我现在项目中使用的方法，在Github上有这个工程，这种方式是使用JNI生成一个与设备相关的密码，可以将该密码作为AES的密钥。链接地址：https://github.com/MasonLiuChn/AndroidUltimateEncrypt
 
 - 2.网上还有一种方式是由JNI生成keyValue和iv，Java层使用：
-
+{%highlight java%}
     static {
     	System.loadLibrary("cwtlib");
     	keyValue = getKeyValue();
@@ -245,6 +245,7 @@ JNI方法 : jint Java_shuliang_han_Hello_hello(JNIEnv * env, jobject clazz, jstr
 
     public static native byte[] getKeyValue();
     public static native byte[] getIv();
+{%endhighlight %}
 
 这种方式，在android app程序完全退出后，再进入该app时，之前加密好的字符串无法解密。
 
