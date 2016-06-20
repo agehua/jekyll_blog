@@ -26,6 +26,10 @@ google_analytics: UA-39647668-2
 # Build settings
 markdown: kramdown
 highlighter: pygments
+kramdown:
+  input: GFM
+  syntax_highlighter: pygments
+  
 sass:
   style: compressed
 gems:
