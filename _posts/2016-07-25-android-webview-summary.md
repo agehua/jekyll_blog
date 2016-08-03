@@ -1,10 +1,10 @@
 ---
 layout: post
-title: Android手机定位服务
+title: Android Webview总结，不断更新中 :(
 category: technology
 tags: 积累
-keywords: LocationListener
-description: Android使用手机定位服务使用，GPS服务不可用则跳转到手机位置服务设置页面
+keywords: Android Webview, js漏洞
+description: Android Webview总结，遇到问题就在这里记录 :(
 ---
 
 * 目录
