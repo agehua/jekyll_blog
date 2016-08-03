@@ -119,6 +119,17 @@ public class MyMapView extends MapView {
 }
 {%endhighlight %}  
 
+9.LocationListener，一直回调到onProviderDisabled
+
+有可能是因为手机没有开启定位服务，解决办法是：
+{%highlight java%}
+			 @Override
+            public void onProviderDisabled(String provider) {
+                isLocatedSuccess = false;
+                if (provider.equals("network")) //跳到位置服务设置页面
+                    startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+			}
+{%endhighlight %}  
 
 ### 3.在真机上测试效果
 需要在真机上安装这两个包：com.android.vending.apk（Google play store）和com.google.android.gms.apk（Google play services）

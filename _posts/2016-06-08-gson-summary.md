@@ -113,4 +113,40 @@ Student[] students= gson.fromJson(jsonstring2,new Student[].class);
 
 	TypeToken是Gson提供的，来实现对泛型的支持
 
+### 3.Android Webview的坑
 
+- 1.webview再次加载页面空白
+
+  不关闭硬件加速的方法：在关闭Acivity之前手动调用下面方法，
+  {%highlight java %}
+   public void goFinish(){
+        isLoadWithError =false;
+        if (null!=jsCallBack)
+            mWebView.removeJavascriptInterface("app");
+        mWebView.setFocusable(true);
+        mWebView.removeAllViews();
+        mWebView.clearHistory();
+        mWebView.destroy();
+
+        try {
+            Field fieldWebView = this.getClass().getDeclaredField("mWebView");
+            fieldWebView.setAccessible(true);
+            WebView webView = (WebView) fieldWebView.get(this);
+            webView.removeAllViews();
+            webView.destroy();
+
+        }catch (NoSuchFieldException e) {
+            e.printStackTrace();
+
+        }catch (IllegalArgumentException e) {
+            e.printStackTrace();
+
+        }catch (IllegalAccessException e) {
+            e.printStackTrace();
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        this.finish();
+    }
+   {%endhighlight %}  
