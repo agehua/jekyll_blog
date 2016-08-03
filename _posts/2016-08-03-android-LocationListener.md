@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Android手机定位服务
-category: accumulation
+category: technology
 tags: 积累
 keywords: LocationListener
 description: Android使用手机定位服务使用，GPS服务不可用则跳转到手机位置服务设置页面
