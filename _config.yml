@@ -3,7 +3,7 @@ title: Agehua-Blog
 email: "lijixin88@gmail.com"
 description: "人不逍遥名逍遥"
 baseurl: ""
-url: "http://agehua.github.io"
+url: "https://agehua.github.io"
 permalink: /:year/:title
 
 
@@ -29,11 +29,13 @@ highlighter: rouge
 kramdown:
   input: GFM
   syntax_highlighter: rouge
-  
+
 sass:
   style: compressed
 gems:
   - jekyll-sitemap
+  - jekyll-gist
+  # - pygments.rb
 
 
 safe: false
