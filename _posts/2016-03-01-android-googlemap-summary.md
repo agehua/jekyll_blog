@@ -16,11 +16,11 @@ description: google map2.0使用总结
 要注意的是map2.0要使用com.google.android.gms包名下的类
 
 Google Maps Android API 使用OpenGL ES第2版来渲染地图。如果未安装OpenGL ES第2版，地图将不会出现。可以在 AndroidManifest.xml 中添加以下<uses-feature>元素作为<manifest>元素的子元素来过滤不能支持的手机：
-{%highlight javascript %}
+~~~ javascript
 <uses-feature
         android:glEsVersion="0x00020000"
         android:required="true"/>
-{%endhighlight %}        
+~~~     
 
 ### 2.在编码中遇到的问题
 1.可以实现OnCameraChangeListener接口，来实现对相机状态的监听，比如我就记录下了地图缩放的大小
@@ -38,7 +38,7 @@ public void onCameraChange(CameraPosition arg0) {
 4.调用Fragment上的getMapAsync()以注册回调。
 
 5.使用手机定位，定位成功后再map上显示标记：
-{%highlight java%}
+~~~ Java
 MarkerOptions markerOpt = new MarkerOptions();  
 markerOpt.position(new LatLng(geoLat, geoLng));  
 markerOpt.draggable(false);  
@@ -53,8 +53,8 @@ cameraPosition = new CameraPosition.Builder()
 	.zoom(zoom)                  // 缩放比例  
 	.bearing(0)                // Sets the orientation of the camera to east  
 	.build();                  // Creates a CameraPosition from the builder  
-mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition)); 
-{%endhighlight %}     
+mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+~~~   
 
 6.实现地图圆角效果：使用圆角.9图片，中间透明，圆角四周不透明<br>
 详细可以看这个提问：http://stackoverflow.com/questions/14469208/is-there-a-way-to-implement-rounded-corners-to-a-mapfragment
@@ -66,7 +66,7 @@ GoogleMap.setMyLocationEnabled(false);
 思路就是使用getParent().requestDisallowInterceptTouchEvent(true);方法，让子类接收到touch事件
 
 代码：
-{%highlight java%}
+~~~ Java
 public class MyMapView extends MapView {
     private ViewParent mViewParent;
 
@@ -117,19 +117,19 @@ public class MyMapView extends MapView {
         return super.onInterceptTouchEvent(event);
     }
 }
-{%endhighlight %}  
+~~~
 
 9.LocationListener，一直回调到onProviderDisabled
 
 有可能是因为手机没有开启定位服务，解决办法是：
-{%highlight java%}
-			 @Override
-            public void onProviderDisabled(String provider) {
-                isLocatedSuccess = false;
-                if (provider.equals("network")) //跳到位置服务设置页面
-                    startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-			}
-{%endhighlight %}  
+~~~ Java
+@Override
+public void onProviderDisabled(String provider) {
+    isLocatedSuccess = false;
+    if (provider.equals("network")) //跳到位置服务设置页面
+        startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+}
+~~~
 
 ### 3.在真机上测试效果
 需要在真机上安装这两个包：com.android.vending.apk（Google play store）和com.google.android.gms.apk（Google play services）
@@ -138,5 +138,3 @@ public class MyMapView extends MapView {
 链接：http://pan.baidu.com/s/1i5q8jo5 密码：solm
 
 安装成功以后，再运行自己的程序，查看效果了
-
-

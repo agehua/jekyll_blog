@@ -15,13 +15,13 @@ description: Android使用手机定位服务使用，GPS服务不可用则跳转
 
 优先使用网络定位服务，当GPS服务不可用则跳转到手机位置服务设置页面
 
-{%highlight java %}
+~~~ Java
 /**
   * 使用手机定位服务
   */
   private void startLocationService(){
       locationListener = new LocationListener() {
-          //当Provider的状态改变时
+
           @Override
           public void onStatusChanged(String provider, int status, Bundle extras) {
           }
@@ -45,7 +45,7 @@ description: Android使用手机定位服务使用，GPS服务不可用则跳转
           public void onLocationChanged(Location location) {
               // 当定位信息发生改变时，更新位置
               isLocatedSuccess = true;
-              Log.e("_+++++++>>","定位成功！！！");
+
               updateToNewLocation(location);
 
 
@@ -59,4 +59,4 @@ description: Android使用手机定位服务使用，GPS服务不可用则跳转
           locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 3 * 1000, 8,locationListener);
       else Toast.makeText(mActivity(), "获取手机位置信息错误", Toast.LENGTH_SHORT).show();
   }
-{%endhighlight %}    
+~~~  
