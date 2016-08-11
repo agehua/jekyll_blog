@@ -17,11 +17,11 @@ description: google map2.0使用总结
 
 Google Maps Android API 使用OpenGL ES第2版来渲染地图。如果未安装OpenGL ES第2版，地图将不会出现。可以在 AndroidManifest.xml 中添加以下<uses-feature>元素作为<manifest>元素的子元素来过滤不能支持的手机：
 
-~~~ Java
+{%highlight java %}
 <uses-feature
         android:glEsVersion="0x00020000"
         android:required="true"/>
-~~~     
+{%endhighlight %}
 
 ### 2.在编码中遇到的问题
 1.可以实现OnCameraChangeListener接口，来实现对相机状态的监听，比如我就记录下了地图缩放的大小
