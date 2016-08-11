@@ -17,14 +17,15 @@ description: google map2.0使用总结
 
 Google Maps Android API 使用OpenGL ES第2版来渲染地图。如果未安装OpenGL ES第2版，地图将不会出现。可以在 AndroidManifest.xml 中添加以下<uses-feature>元素作为<manifest>元素的子元素来过滤不能支持的手机：
 
-{%highlight java %}
+~~~ Java
 <uses-feature
         android:glEsVersion="0x00020000"
         android:required="true"/>
-{%endhighlight %}
+~~~
 
 ### 2.在编码中遇到的问题
 1.可以实现OnCameraChangeListener接口，来实现对相机状态的监听，比如我就记录下了地图缩放的大小
+
 ~~~ Java
 @Override
 public void onCameraChange(CameraPosition arg0) {
@@ -32,6 +33,7 @@ public void onCameraChange(CameraPosition arg0) {
 	zoom = arg0.zoom;
 }
 ~~~  
+
 2.向将处理地图的 Activity 添加 Fragment 对象。 最简单的实现方式是，向Activity 的布局文件添加 <fragment> 元素。
 
 3.实现 OnMapReadyCallback 接口，并使用onMapReady(GoogleMap)回调方法获取GoogleMap对象的句柄。GoogleMap对象是对地图本身的内部表示。如需设置地图的视图选项，可以使用UiSettings设置地图的样式。
@@ -39,6 +41,7 @@ public void onCameraChange(CameraPosition arg0) {
 4.调用Fragment上的getMapAsync()以注册回调。
 
 5.使用手机定位，定位成功后再map上显示标记：
+
 ~~~ Java
 MarkerOptions markerOpt = new MarkerOptions();  
 markerOpt.position(new LatLng(geoLat, geoLng));  
@@ -66,7 +69,6 @@ GoogleMap.setMyLocationEnabled(false);
 8.解决mapview与scrollview嵌套滑动的问题：
 思路就是使用getParent().requestDisallowInterceptTouchEvent(true);方法，让子类接收到touch事件
 
-代码：
 ~~~ Java
 public class MyMapView extends MapView {
     private ViewParent mViewParent;
