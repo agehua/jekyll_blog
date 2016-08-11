@@ -16,7 +16,8 @@ description: google map2.0使用总结
 要注意的是map2.0要使用com.google.android.gms包名下的类
 
 Google Maps Android API 使用OpenGL ES第2版来渲染地图。如果未安装OpenGL ES第2版，地图将不会出现。可以在 AndroidManifest.xml 中添加以下<uses-feature>元素作为<manifest>元素的子元素来过滤不能支持的手机：
-~~~ javascript
+
+~~~ JavaScript
 <uses-feature
         android:glEsVersion="0x00020000"
         android:required="true"/>
@@ -24,13 +25,13 @@ Google Maps Android API 使用OpenGL ES第2版来渲染地图。如果未安装O
 
 ### 2.在编码中遇到的问题
 1.可以实现OnCameraChangeListener接口，来实现对相机状态的监听，比如我就记录下了地图缩放的大小
-{%highlight java%}
+~~~ Java
 @Override
 public void onCameraChange(CameraPosition arg0) {
 	// TODO Auto-generated method stub
 	zoom = arg0.zoom;
 }
-{%endhighlight %}  
+~~~  
 2.向将处理地图的 Activity 添加 Fragment 对象。 最简单的实现方式是，向Activity 的布局文件添加 <fragment> 元素。
 
 3.实现 OnMapReadyCallback 接口，并使用onMapReady(GoogleMap)回调方法获取GoogleMap对象的句柄。GoogleMap对象是对地图本身的内部表示。如需设置地图的视图选项，可以使用UiSettings设置地图的样式。
