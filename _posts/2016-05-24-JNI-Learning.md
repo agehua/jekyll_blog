@@ -15,19 +15,19 @@ description: android JNI学习，实现aes加密
 ### 1.JNI介绍
 JNI概念 : Java本地接口,Java Native Interface, 它是一个协议, 该协议用来沟通Java代码和外部的本地C/C++代码, 通过该协议 Java代码可以调用外部的本地代码, 外部的C/C++ 代码可以调用Java代码;
 
-C和Java的侧重 : 
+C和Java的侧重 :
 
-- C语言 : C语言中最重要的是 函数 function; 
+- C语言 : C语言中最重要的是 函数 function;
 - Java语言 : Java中最重要的是 JVM, class类, 以及class中的方法;
 
-C与Java如何交流 : 
+C与Java如何交流 :
 
-- JNI规范 : C语言与Java语言交流需要一个适配器, 中间件, 即 JNI, JNI提供了一种规范; 
-- C语言中调用Java方法 : 可以让我们在C代码中找到Java代码class中的方法, 并且调用该方法; 
-- Java语言中调用C语言方法 : 同时也可以在Java代码中, 将一个C语言的方法映射到Java的某个方法上; 
+- JNI规范 : C语言与Java语言交流需要一个适配器, 中间件, 即 JNI, JNI提供了一种规范;
+- C语言中调用Java方法 : 可以让我们在C代码中找到Java代码class中的方法, 并且调用该方法;
+- Java语言中调用C语言方法 : 同时也可以在Java代码中, 将一个C语言的方法映射到Java的某个方法上;
 - JNI桥梁作用 : JNI提供了一个桥梁, 打通了C语言和Java语言之间的障碍;
 
-JNI中的一些概念 : 
+JNI中的一些概念 :
 
 - native : Java语言中修饰本地方法的修饰符, 被该修饰符修饰的方法没有方法体;
 - Native方法 : 在Java语言中被native关键字修饰的方法是Native方法;
@@ -57,61 +57,72 @@ NDK版本介绍 : android-ndk-windows 是在windows系统中的cygwin使用的, 
 ### 3.环境准备，使用android studio还是Eclipse
 推荐使用Eclipse，这篇文章讲了使用Eclipse生成.h文件和生成so文件的配置过程。配置成功后可以远离命令行：http://blog.csdn.net/jspping/article/details/47780307
 
-Java 调用 C 流程 : 
+Java 调用 C 流程 :
 
 - a. 定义 Native 方法 : 比如在com.packagename.jni.JNITest.java 类中定义 Native 方法 public native int add(int x, int y);
 - b. 生成方法签名 : 进入 AndroidProject/bin/classes 目录, 使用 javah com.packagename.jni.JNITest 命令, 便生成了头文件, 该头文件引用了 jni.h, 以及定义好了对应的 Native 方法, 生成 JNIEXPORT jint JNICALL Java_com_packagename_jni_JNITest_add (JNIEnv *, jobject, jint, jint);  
 
-Java中定义的方法 : 
+Java中定义的方法 :
 
-    //将Java中的两个int值 传给C语言, 进行相加后, 返回java语言 shuliang.han.ndkparameterpassing.DataProvider  
-    public native int add(int x, int y);  
+~~~ Java
+//将Java中的两个int值 传给C语言, 进行相加后, 返回java语言 shuliang.han.ndkparameterpassing.DataProvider  
+public native int add(int x, int y);  
+~~~
+对应C语言中定义的方法 :
 
-对应C语言中定义的方法 : 
+~~~ C++
+#include <jni.h>  
 
-    #include <jni.h>  
-  
-    //方法签名, Java环境和调用native方法的类必不可少, 后面的参数就是native方法的参数  
-    jint Java_com_packagename_jni_JNITest_add(JNIEnv * env, jobject obj, jint x, jint y)  
-	{  
-        return x + y;  
-	}  
+//方法签名, Java环境和调用native方法的类必不可少, 后面的参数就是native方法的参数  
+jint Java_com_packagename_jni_JNITest_add(JNIEnv * env, jobject obj, jint x, jint y)  
+{  
+    return x + y;  
+}  
+~~~
 
-- c. 编写 Android.mk 文件 : 
+- c. 编写 Android.mk 文件 :
 
-    LOCAL_PATH := $(call my-dir)    
-    
-    include $(CLEAR_VARS)    
-    
-    LOCAL_MODULE    := hello-jni    
-	LOCAL_SRC_FILES := hello-jni.c    
-    
-	include $(BUILD_SHARED_LIBRARY)  
+~~~ C++
+LOCAL_PATH := $(call my-dir)    
+
+include $(CLEAR_VARS)    
+
+LOCAL_MODULE    := hello-jni    
+LOCAL_SRC_FILES := hello-jni.c    
+
+include $(BUILD_SHARED_LIBRARY)  
+~~~  
 
 文件内容解释：
 
-    获取当前文件内容 : $(call my-dir) 是编译器中的宏方法, 调用该宏方法, 就会返回前的目录路径; 
+    获取当前文件内容 : $(call my-dir) 是编译器中的宏方法, 调用该宏方法, 就会返回前的目录路径;
     赋值符号 : " := " 是赋值符号, 第一句话 是 返回当前文件所在的当前目录, 并将这个目录路径赋值给 LOCAL_PATH;
     初始化编译模块参数 : $(CLEAR_VARS) 作用是将编译模块的参数初始化, LOCAL_MODULE LOCAL_SRC_FILES 也是这样的参数;
     指定编译模块 : LOCAL_MODULE    := hello-jni , 指定编译后的 so 文件名称, 编译好之后系统会在该名称前面加上 "lib", 后缀加上 ".so";
-    指定编译源文件 : LOCAL_SRC_FILES := hello-jni.c 告诉编译系统源文件, 如果有多个文件那么就依次写在后面即可; 
+    指定编译源文件 : LOCAL_SRC_FILES := hello-jni.c 告诉编译系统源文件, 如果有多个文件那么就依次写在后面即可;
     编译成静态库 : include $(BUILD_SHARED_LIBRARY), 作用是告诉系统, 将编译的结果编译成.so后缀的静态库;
 
 静态库引入 : NDK的platform中有很多 ".a" 结尾的动态库, 我们编译动态库的时候, 可以将一些静态库引入进来;
 
 - d. 生成 动态库 so 文件 : 进入 Android.mk 所在目录, 在该目录执行ndk下的ndk-build命令;
-- e. Java代码加载动态库 : 在 Java 代码中调用该类的类前面, 在类的一开始, 不在方法中, 加入 
+- e. Java代码加载动态库 : 在 Java 代码中调用该类的类前面, 在类的一开始, 不在方法中, 加入
 
-    static{ System.loadLibrary("hello"); } ;
+~~~ C++
+static{ System.loadLibrary("hello"); } ;
+~~~
 
- Android.mk 文件内容为（不写这个文件也可以）: 
+ Android.mk 文件内容为（不写这个文件也可以）:
 
-    APP_STL := stlport_static
-	APP_ABI := all
+~~~ Java
+APP_STL := stlport_static
+APP_ABI := all
+~~~  
 
-![]({{ site.url }}/assets/img/jni_structure.png  =338x461)
+<!-- ![]({{ site.url }}/assets/img/jni_structure.png  =338x461) -->
+<!-- 指定图片大小有问题 -->
+[![Pure CSS Happy Hacking Keyboard](/assets/img/jni_structure.png)](http://codepen.io/P233/pen/qEagi)
 
-这篇文章是使用javah导出头文件，常见错误和解决办法，这里做一个简单的记录：http://blog.csdn.net/hejinjing_tom_com/article/details/8125648
+[这篇文章](http://blog.csdn.net/hejinjing_tom_com/article/details/8125648)是使用javah导出头文件过程中，常见错误和解决办法，这里做一个记录。
 
 
 ### 4.字符串的处理
@@ -128,11 +139,11 @@ char* rtn = NULL;
 jclass clsstring = (*env)->FindClass(env, "java/lang/String");  
 //创建一个Java中的字符串 "GB2312"  
 jstring strencode = (*env)->NewStringUTF(env, "GB2312");  
-/* 
- * 获取String中定义的方法 getBytes(), 该方法的参数是 String类型的, 返回值是 byte[]数组 
- * "(Ljava/lang/String;)[B" 方法前面解析 : 
- * -- Ljava/lang/String; 表示参数是String字符串 
- * -- [B : 中括号表示这是一个数组, B代表byte类型, 返回值是一个byte数组 
+/*
+ * 获取String中定义的方法 getBytes(), 该方法的参数是 String类型的, 返回值是 byte[]数组
+ * "(Ljava/lang/String;)[B" 方法前面解析 :
+ * -- Ljava/lang/String; 表示参数是String字符串
+ * -- [B : 中括号表示这是一个数组, B代表byte类型, 返回值是一个byte数组
  */  
 jmethodID mid = (*env)->GetMethodID(env, clsstring, "getBytes",  
 		"(Ljava/lang/String;)[B");  
@@ -154,7 +165,7 @@ if (alen > 0) {
 }  
 {%endhighlight %}  
 
-- Jstring2CStr方法讲解 : 
+- Jstring2CStr方法讲解 :
    - a. 获取Java中String类型的class对象 : 参数 : 上下文环境 env, String类完整路径 ;
 {%highlight java%}
     jclass clsstring = (*env)->FindClass(env, "java/lang/String");  
@@ -168,7 +179,7 @@ if (alen > 0) {
     jmethodID mid = (*env)->GetMethodID(env, clsstring, "getBytes",  
         "(Ljava/lang/String;)[B");  
 {%endhighlight %}        
-   - d. 获取数组的长度 : 
+   - d. 获取数组的长度 :
 {%highlight java%}
     jsize alen = (*env)->GetArrayLength(env, barr);  
 {%endhighlight %}   
@@ -184,28 +195,28 @@ if (alen > 0) {
         rtn[alen] = 0;  
     }  
 {%endhighlight %}    
-   - g.释放内存 : 
+   - g.释放内存 :
 {%highlight java%}
-    (*env)->ReleaseByteArrayElements(env, barr, ba, 0); //释放内存 
+    (*env)->ReleaseByteArrayElements(env, barr, ba, 0); //释放内存
 {%endhighlight %}
 ### 5.JNI方法命名规则(标准JNI规范)
 
 - JNI实现的方法 与 Java中Native方法的映射关系 : 使用方法名进行映射, 可以使用 javah 工具进入 bin/classes 目录下执行命令, 即可生成头文件;
 
-- JNI方法参数介绍: 
+- JNI方法参数介绍:
 参数① : 第一个参数是JNI接口指针 JNIEnv;
 参数② : 如果Native方法是非静态的, 那么第二个参数就是对Java对象的引用, 如果Native方法是静态的, 那么第二个参数就是对Java类的Class对象的引用;
 
 - JNI方法名规范 : 返回值 + Java前缀 + 全路径类名 + 方法名 + 参数① JNIEnv + 参数② jobject + 其它参数;
 注意分隔符 : Java前缀 与 类名 以及类名之间的包名 和 方法名之间 使用 "_" 进行分割;
 
-- 声明 非静态 方法: 
-Native方法 : public int hello (String str, int i); 
+- 声明 非静态 方法:
+Native方法 : public int hello (String str, int i);
 
 JNI方法: jint Java_shuliang_han_Hello_hello(JNIEnv * env, jobject obj, jstring str, jint i);
 
-- 声明 静态 方法 : 
-Native方法 : public static int hello (String str, int i); 
+- 声明 静态 方法 :
+Native方法 : public static int hello (String str, int i);
 JNI方法 : jint Java_shuliang_han_Hello_hello(JNIEnv * env, jobject clazz, jstring str, jint i);
 
 - 两种规范 : 以上是Java的标准JNI规范, 在Android中还有一套自定义的规范, 该规范是Android应用框架层 和 框架层交互使用的JNI规范, 依靠方法注册 映射 Native方法 和 JNI方法;
@@ -227,8 +238,8 @@ JNI方法 : jint Java_shuliang_han_Hello_hello(JNIEnv * env, jobject clazz, jstr
     	System.loadLibrary("cwtlib");
     	keyValue = getKeyValue();
     	iv = getIv();
-    	
-    	if(null != keyValue && 
+
+    	if(null != keyValue &&
     			null != iv) {
     		KeyGenerator kgen;  
             try {  
@@ -258,14 +269,14 @@ JNI方法 : jint Java_shuliang_han_Hello_hello(JNIEnv * env, jobject clazz, jstr
 检查下 C/C++代码中没有直接访问Java代码的类或者类的成员变量、类的成员函数。
 如果有的话，这些就不能混淆
 
-
+{%highlight java%}
     //保留jni的回调类
     -keep class com.your.jnicallback.class { *; }
     //这个不用更改，直接复制就可以
     -keepclasseswithmembernames class * {
         native <methods>;
     }
+{%endhighlight %}
 
 ### 8.总结
 android 实现JNI入门并不难，笔者也刚刚入门，但要深入了解还是需要很长的路要走。
-

@@ -16,7 +16,7 @@ github:   agehua
 
 
 # Comment
-disqus_shortname: agehua
+# disqus_shortname: agehua
 
 
 # Google Analytics
@@ -29,6 +29,9 @@ highlighter: rouge
 kramdown:
   input: GFM
   syntax_highlighter: rouge
+# rdiscount:
+#    extensions:
+#      - footnotes
 
 sass:
   style: compressed
@@ -37,10 +40,10 @@ gems:
   - jekyll-gist
   # - pygments.rb
 
-
-safe: false
-cdn_url : http://7xuos6.com2.z0.glb.qiniucdn.com/
-
-JB :
-  ASSET_PATH : false
-  IMAGE_PATH : false
+# CDN加速，使用七牛
+# safe: false
+# cdn_url : http://7xuos6.com2.z0.glb.qiniucdn.com/
+#
+# JB :
+#   ASSET_PATH : false
+#   IMAGE_PATH : false

@@ -100,10 +100,10 @@ json字符串以“[”开头。
 
 {%highlight java %}
  List<Student> retList = gson.fromJson(jsonstring2,  new TypeToken<List<Student>>(){}.getType()); 
- {%endhighlight %}    
+{%endhighlight %}    
 
 
-- 也可以这样 
+- 也可以这样
 
 {%highlight java %}
 Student[] students= gson.fromJson(jsonstring2,new Student[].class);
@@ -112,4 +112,3 @@ Student[] students= gson.fromJson(jsonstring2,new Student[].class);
 - 对应list为什么要使用TypeToken？
 
 	TypeToken是Gson提供的，来实现对泛型的支持
-
