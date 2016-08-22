@@ -120,7 +120,9 @@ APP_ABI := all
 
 <!-- ![]({{ site.url }}/assets/img/jni_structure.png  =338x461) -->
 <!-- 指定图片大小有问题 -->
-[![Pure CSS Happy Hacking Keyboard](/assets/img/jni_structure.png)](http://codepen.io/P233/pen/qEagi)
+
+<!-- [![Pure CSS Happy Hacking Keyboard](/assets/img/jni_structure.png)](http://codepen.io/P233/pen/qEagi) -->
+![Eclipse JNI目录结构](/assets/img/jni_structure.png)
 
 [这篇文章](http://blog.csdn.net/hejinjing_tom_com/article/details/8125648)是使用javah导出头文件过程中，常见错误和解决办法，这里做一个记录。
 

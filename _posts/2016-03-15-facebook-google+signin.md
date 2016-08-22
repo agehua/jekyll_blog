@@ -1,9 +1,9 @@
 ---
 layout: post
-title: android facebook google+ Twitter登录总结+fragment使用总结
+title: 近期总结: facebook google+ Twitter登录+fragment使用
 category: accumulation
 tags: 积累
-keywords: android, google map
+keywords: android, google map, fragments
 description: google map2.0使用总结
 ---
 
@@ -11,19 +11,43 @@ description: google map2.0使用总结
 {:toc}
 
 ### 1.相关资料
-blog: http://www.cnblogs.com/lngg057/p/5020192.html
+blog: [关于Google+以及Facebook第三方登录实现的一点总结](http://www.cnblogs.com/lngg057/p/5020192.html)
 
-g+start: https://developers.google.com/identity/sign-in/android/start
+g+官方教程: [G+ start](https://developers.google.com/identity/sign-in/android/start)
 
-facebook start: https://developers.facebook.com/docs/android/getting-started
+facebook官方教程: [Facebook start](https://developers.facebook.com/docs/android/getting-started)
 
-iCCP: Not recognizing known sRGB profile： http://www.bigademo.com/iccp-not-recognizing-known-srgb-profile/
+iCCP: [Not recognizing known sRGB profile](http://www.bigademo.com/iccp-not-recognizing-known-srgb-profile/)
 
-今天做分享的时候遇到了这个问题：
+- 今天做分享的时候遇到了这个问题：
+
 [2016-04-01 11:24:04 - Dex Loader] Unable to execute dex: method ID not in [0, 0xffff]: 65536
 [2016-04-01 11:24:04 - VIVAT_SHARESDK] Conversion to Dalvik format failed: Unable to execute dex: method ID not in [0, 0xffff]: 65536
 
-大项目中遇到的问题看这个博客，http://www.cnblogs.com/yaozhongxiao/p/3521428.html
+[大项目中遇到的问题看这个博客](http://www.cnblogs.com/yaozhongxiao/p/3521428.html)
+
+- iCCP: Not recognizing known sRGB profile 删除png图片内嵌的iCCP profile sRGB报错
+
+今天有碰见一个坑，改其他代码，然后在编译的时候就出现这个问题，对就是这个问题。网上查了资料，也就这个资料最全面，大家可以去看见http://my.oschina.net/1pei/blog/479162?fromerr=ARrUPlGS
+
+处理这个问题我使用了一种方法，记录下来以便以后使用
+
+步骤1:下载Image Magick http://www.imagemagick.com.cn/download.html.如果是windows的，请下载含dll的
+
+步骤2： 在要处理的文件夹使用如下命令 ，一定要在要处理的文件夹使用
+
+~~~ C++
+//WINDOWS使用
+set fn=E:\Program Files\ImageMagick-6.9.0-Q16\convert.exe  
+for /f "tokens=*" %i in ('dir/s/b *.png') do "%fn%" "%i" -strip "%i"
+（因为是window的，所以把%%i改为%i）
+~~~
+
+~~~ C++
+//LINUX使用
+ set fn=E:\Program Files\ImageMagick-6.9.0-Q16\convert.exe  
+for /f "tokens=*" %%i in ('dir/s/b *.png') do "%fn%" "%%i" -strip "%%i"
+~~~
 
 ### 2.遇到问题
 1.“This client application's callback url has been locked”。使用Twitter signin时遇到了这个问题，这个错误信息是在logcat中找到的，原因是在https://apps.twitter.com的Settings里
