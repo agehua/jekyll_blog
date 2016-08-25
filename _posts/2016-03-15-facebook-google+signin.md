@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 近期总结: facebook google+ Twitter登录+fragment使用
+title: 近期总结facebook google+ Twitter sign-in fragment使用
 category: accumulation
 tags: 积累
 keywords: android, google map, fragments
