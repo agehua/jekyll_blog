@@ -61,7 +61,7 @@ mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 ~~~   
 
 6.实现地图圆角效果：使用圆角.9图片，中间透明，圆角四周不透明<br>
-详细可以看这个提问：http://stackoverflow.com/questions/14469208/is-there-a-way-to-implement-rounded-corners-to-a-mapfragment
+详细可以看这个提问：[Is there a way to implement rounded corners to a Mapfragment?](http://stackoverflow.com/questions/14469208/is-there-a-way-to-implement-rounded-corners-to-a-mapfragment)
 
 7.去掉google地图自带的蓝色圆点
 GoogleMap.setMyLocationEnabled(false);
