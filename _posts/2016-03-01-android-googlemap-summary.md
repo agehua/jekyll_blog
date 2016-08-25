@@ -125,6 +125,7 @@ public class MyMapView extends MapView {
 9.LocationListener，一直回调到onProviderDisabled
 
 有可能是因为手机没有开启定位服务，解决办法是：
+
 ~~~ Java
 @Override
 public void onProviderDisabled(String provider) {
