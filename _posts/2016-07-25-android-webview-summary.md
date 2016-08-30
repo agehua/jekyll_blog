@@ -55,7 +55,7 @@ description: Android Webview总结，遇到问题就在这里记录 :(
     }
    {%endhighlight %}
 
-注意：因为用到了反射去清理webview，所以混淆时，这个方法所在的类不能混淆
+注意：因为用到了反射去清理webview，所以混淆时，**这个方法所在的类不能混淆**
 
 
 - 2.部分手机h5 game屏幕闪烁

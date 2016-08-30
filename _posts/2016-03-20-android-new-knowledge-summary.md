@@ -10,10 +10,10 @@ keywords: 新特性, 新知识点,总结
 * 目录
 {:toc}
 
-### mipmap 目录和drawable 目录有什么区别
+### 一、mipmap 目录和drawable 目录有什么区别
 Nexus 6 有 493 ppi，它刚好在 xxhdpi和xxxhdpi之间，所以显示的时候需要对xxxhdpi的资源进行缩小，如果你用了mipmap-xxxhdpi,那么这里会对sclae有一个优化，性能更好，占用内存更少。所以现在官方推荐使用mipmap：
 
-### setTranslucentStatus()方法
+### 二、setTranslucentStatus()方法
 在Android4.4之后使用沉浸式状态栏，需要用到这个方法
 {%highlight java%}
 
@@ -84,3 +84,100 @@ public class MainActivity extends Activity
 
 </LinearLayout>
 {%endhighlight %}
+
+### 三、Activity横竖屏切换生命周期
+
+总结：
+
+* 1、不设置Activity的android:configChanges时，切屏会重新调用各个生命周期，切横屏时会执行一次，切竖屏时会执行两次
+
+* 2、设置Activity的android:configChanges="orientation"时，切屏还是会重新调用各个生命周期，切横、竖屏时只会执行一次
+
+* 3、设置Activity的android:configChanges="orientation\|keyboardHidden"时，切屏不会重新调用各个生命周期，只会执行onConfigurationChanged方法
+
+验证：
+
+1、新建一个Activity，并把各个生命周期打印出来
+
+2、运行Activity，得到如下信息
+
+{%highlight java%}
+onCreate-->
+onStart-->
+onResume-->
+{%endhighlight %}
+
+3、按crtl+f12切换成横屏时
+
+{%highlight java%}
+onSaveInstanceState-->
+onPause-->
+onStop-->
+onDestroy-->
+onCreate-->
+onStart-->
+onRestoreInstanceState-->
+onResume-->
+{%endhighlight %}
+4、再按crtl+f12切换成竖屏时，发现打印了两次相同的log
+
+{%highlight java%}
+onSaveInstanceState-->
+onPause-->
+onStop-->
+onDestroy-->
+onCreate-->
+onStart-->
+onRestoreInstanceState-->
+onResume-->
+onSaveInstanceState-->
+onPause-->
+onStop-->
+onDestroy-->
+onCreate-->
+onStart-->
+onRestoreInstanceState-->
+onResume-->
+{%endhighlight %}
+5、修改AndroidManifest.xml，把该Activity添加 android:configChanges="orientation"，执行步骤3
+
+{%highlight java%}
+onSaveInstanceState-->
+onPause-->
+onStop-->
+onDestroy-->
+onCreate-->
+onStart-->
+onRestoreInstanceState-->
+onResume-->
+{%endhighlight %}
+6、再执行步骤4，发现不会再打印相同信息，但多打印了一行onConfigChanged
+
+{%highlight java%}
+onSaveInstanceState-->
+onPause-->
+onStop-->
+onDestroy-->
+onCreate-->
+onStart-->
+onRestoreInstanceState-->
+onResume-->
+onConfigurationChanged-->
+{%endhighlight %}
+7、把步骤5的android:configChanges="orientation" 改成android:configChanges="orientation\|keyboardHidden"，执行步骤3，就只打印onConfigChanged
+
+{%highlight java%}
+onConfigurationChanged-->
+{%endhighlight %}
+8、执行步骤4
+
+{%highlight java%}
+onConfigurationChanged-->
+onConfigurationChanged-->
+{%endhighlight %}
+
+    总结一下整个Activity的生命周期
+
+        1.补充一点，当前Activity产生事件弹出Toast和AlertDialog的时候Activity的生命周期不会有改变
+        2.Activity运行时按下HOME键(跟被完全覆盖是一样的)：onSaveInstanceState --> onPause --> onStop       onRestart -->onStart--->onResume
+        3.Activity未被完全覆盖只是失去焦点：onPause--->onResume

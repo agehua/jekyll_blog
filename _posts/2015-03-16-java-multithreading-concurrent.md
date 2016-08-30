@@ -37,6 +37,7 @@ description:
 > 形象的讲，进程就是一个项目组，每个程序员就是里面的线程呀！当然一个程序员也可以叫做一个项目组，对应的就是一个进程只有一个线程。公司里面的任务是分配给项目组级别的，干活的就是其中的程序员。总的意思就是，进程和线程没有什么区别。
 吐槽的话：我的意思就是进程干不过来了，那就多开几个线程呀！from [JacobK](https://www.zhihu.com/question/21535820/answer/19120563)
 
+
 ### 3. 多线程编程的好处是什么？
 - 在进程内创建、终止线程比创建、终止进程要快；
 - 同一进程内的线程间切换比进程间的切换要快,尤其是用户级线程间的切换。
@@ -89,10 +90,10 @@ a. 使用全局变量。进程中的线程间内存共享，这是比较常用�
 
 b. 使用消息实现通信。在Windows程序设计中，每一个线程都可以拥有自己的消息队列（UI线程默认自带消息队列和消息循环，工作线程需要手动实现消息循环），因此可以采用消息进行线程间通信sendMessage,postMessage。
 
-``` 
+```
 1)定义消息#define WM_THREAD_SENDMSG=WM_USER+20;  
-2)添加消息函数声明afx_msg int OnTSendmsg(); 
-3)添加消息映射ON_MESSAGE(WM_THREAD_SENDMSG,OnTSM) 
+2)添加消息函数声明afx_msg int OnTSendmsg();
+3)添加消息映射ON_MESSAGE(WM_THREAD_SENDMSG,OnTSM)
 4)添加OnTSM()的实现函数；
 5)在线程函数中添加PostMessage消息Post函数
 ```
@@ -100,8 +101,8 @@ b. 使用消息实现通信。在Windows程序设计中，每一个线程都可�
 c. 使用事件CEvent类实现线程间通信。Event对象有两种状态：有信号和无信号，线程可以监视处于有信号状态的事件，以便在适当的时候执行对事件的操作。
 
 ```
-1)创建一个CEvent类的对象：CEvent threadStart;它默认处在未通信状态； 
-2)threadStart.SetEvent();使其处于通信状态； 
+1)创建一个CEvent类的对象：CEvent threadStart;它默认处在未通信状态；
+2)threadStart.SetEvent();使其处于通信状态；
 3)调用WaitForSingleObject()来监视CEvent对象
 ```
 

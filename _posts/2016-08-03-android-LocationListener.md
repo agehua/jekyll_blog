@@ -45,10 +45,7 @@ description: Android使用手机定位服务使用，GPS服务不可用则跳转
           public void onLocationChanged(Location location) {
               // 当定位信息发生改变时，更新位置
               isLocatedSuccess = true;
-
               updateToNewLocation(location);
-
-
               locManager.removeUpdates(this);
           }
       };

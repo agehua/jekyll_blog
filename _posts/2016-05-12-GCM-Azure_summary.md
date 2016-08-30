@@ -39,7 +39,7 @@ API中这样描述：当你一个Activity是以请求码开始，结束时返回
 
 ### 4.Android4.4以上系统根据Uri正确获取文件路径的方法
 
-{%highlight java%}
+~~~ Java
 
 public static String getPhotoPathFromContentUri(Context context, Uri uri) {
     String photoPath = "";
@@ -121,4 +121,4 @@ private static String getDataColumn(Context context, Uri uri, String selection, 
     return null;
 }
 
-{%endhighlight %}
+~~~

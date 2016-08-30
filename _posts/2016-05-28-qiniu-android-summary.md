@@ -12,11 +12,12 @@ description: 七牛android使用总结，包括list，delete，upload，download
 
 
 ### 1.在android上实现对七牛空间操作
-在android上实现对七牛空间的各种操作，包括list，delete，upload，download。支持私有空间
 
-注意：官方不建议开发者把AccessKey和SecretKey放在前端的java文件里，最好还是有一台应用服务器
+  在android上实现对七牛空间的各种操作，包括list，delete，upload，download。支持私有空间
 
-如果只是想尝试一下，好吧:)  代码中都有说明，直接上代码
+  注意：**官方不建议开发者把AccessKey和SecretKey放在前端的java文件里**，最好还是有一台应用服务器
+
+  如果只是想尝试一下，好吧:)  代码中都有说明，直接上代码
 
 ### 2.代码
 
@@ -24,7 +25,7 @@ description: 七牛android使用总结，包括list，delete，upload，download
 
 - 工具类：
 
-{%highlight java %}
+~~~ Java
  package com.qiniu.ui.utils;
 
  import android.graphics.Bitmap;
@@ -323,13 +324,13 @@ description: 七牛android使用总结，包括list，delete，upload，download
  	}
 
  }
- {%endhighlight %}
+~~~
 
 - HMAC-SHA1签名加密类
 
 使用下面方法生成对应七牛资源管理里用到的[管理凭证](http://developer.qiniu.com/article/developer/security/access-token.html)
-{%highlight java %}
 
+~~~ Java
 /**
  * 对外提供HMAC-SHA1签名方法
  * @author agehua
@@ -362,11 +363,11 @@ public class SHA {
         return mac.doFinal(text);
     }
 }  
-{%endhighlight %}    
+~~~  
 
 - 还有一个Config文件
 
-{%highlight java %}
+~~~ Java
 public final class QiNiuConfig {
 	public static final String token = getToken();
 	public static final String QINIU_AK = "Your_AccessKey";
@@ -390,7 +391,7 @@ public final class QiNiuConfig {
 	}
 }
 
-{%endhighlight %}
+~~~
 
  [点击在Gist上查看上面这些代码](https://gist.github.com/agehua/f73bcb98af2c0c44a4c49c7c7b7e6bda)
 

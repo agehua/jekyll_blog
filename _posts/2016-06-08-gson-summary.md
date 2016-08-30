@@ -15,8 +15,8 @@ description: Gson解析使用总结
 Gson 是Google提供的用来在Java对象和JSON数据之间进行映射的Java类库。可以将一个JSON字符串转成一个Java对象，或者将Java对象转成一个JSON字符串。
 使用Gson来解析时，总结一下，就两句话：
 
-- 1.遇到“{”字符，表示单个对象，直接用XXXBean.class类去映射
-- 2.遇到“[”字符，表示对象数组，要用XXXBean[].class或list<XXXBean>去映射
+- 1.**遇到“{”字符，表示单个对象，直接用XXXBean.class类去映射**
+- 2.**遇到“[”字符，表示对象数组，要用XXXBean[].class或list<XXXBean>去映射**
 
 ### 2.第一种情况，举例
 
@@ -99,7 +99,7 @@ json字符串以“[”开头。
 - 解析时，需要使用list来接收。
 
 {%highlight java %}
- List<Student> retList = gson.fromJson(jsonstring2,  new TypeToken<List<Student>>(){}.getType()); 
+ List<Student> retList = gson.fromJson(jsonstring2,  new TypeToken<List<Student>>(){}.getType());
 {%endhighlight %}    
 
 
