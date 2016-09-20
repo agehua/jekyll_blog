@@ -13,7 +13,7 @@ description: RxAndroid学习
 ### 1.向前辈致敬
 [给Android开发者的RxJava详解](http://gank.io/post/560e15be2dca930e00da1083)，这篇文章讲解详细，如果耐心看完，相信肯定收获不小
 
-本篇博文用作学习RxJava过程中，记录知识和心得，如有冒犯还请见谅！
+    本篇博文用作学习RxJava过程中，记录知识和心得，如有冒犯还请见谅！
 
 ### 2.简单介绍
 RxJava是通过一种扩展的观察者模式来实现的。

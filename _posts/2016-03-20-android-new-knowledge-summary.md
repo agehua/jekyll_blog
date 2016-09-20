@@ -15,8 +15,8 @@ Nexus 6 有 493 ppi，它刚好在 xxhdpi和xxxhdpi之间，所以显示的时�
 
 ### 二、setTranslucentStatus()方法
 在Android4.4之后使用沉浸式状态栏，需要用到这个方法
-{%highlight java%}
 
+~~~ Java
 public class MainActivity extends Activity
 {
     @Override
@@ -53,10 +53,11 @@ public class MainActivity extends Activity
         win.setAttributes(winParams);
     }
 }
-{%endhighlight %}
+~~~
 
 布局设置
-{%highlight javascript%}
+
+~~~ Javascript%
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
@@ -83,9 +84,24 @@ public class MainActivity extends Activity
             android:background="@android:color/darker_gray"/>
 
 </LinearLayout>
-{%endhighlight %}
+~~~
 
-### 三、Activity横竖屏切换生命周期
+### 三、获取Bitmap图片大小的代码
+
+~~~ Java
+public int getBitmapSize(Bitmap bitmap){
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){     //API 19
+        return bitmap.getAllocationByteCount();
+    }
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR1){//API 12
+        return bitmap.getByteCount();
+    }
+    return bitmap.getRowBytes() * bitmap.getHeight();                //earlier version
+}
+~~~
+
+
+### 四、Activity横竖屏切换生命周期
 
 总结：
 
