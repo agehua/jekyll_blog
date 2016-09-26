@@ -1,8 +1,8 @@
 ---
 layout: post
 title: 七牛android使用总结
-category: accumulation
-tags: 积累
+category: technology
+tags: 技术
 keywords: qiniu, android
 description: 七牛android使用总结，包括list，delete，upload，download
 ---

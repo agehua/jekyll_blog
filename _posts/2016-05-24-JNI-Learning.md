@@ -55,9 +55,9 @@ NDK版本介绍 : android-ndk-windows 是在windows系统中的cygwin使用的, 
 
 
 ### 3.环境准备，使用android studio还是Eclipse
-推荐使用Eclipse，这篇文章讲了使用Eclipse生成.h文件和生成so文件的配置过程。配置成功后可以远离命令行：http://blog.csdn.net/jspping/article/details/47780307
+推荐使用Eclipse，这篇文章讲了使用Eclipse生成.h文件和生成so文件的配置过程。配置成功后可以远离命令行[Eclipse ADT插件生成.h/.so文件](http://blog.csdn.net/jspping/article/details/47780307)
 
-Java 调用 C 流程 :
+#### 3.1 Java调用C流程
 
 - a. 定义 Native 方法 : 比如在com.packagename.jni.JNITest.java 类中定义 Native 方法 public native int add(int x, int y);
 - b. 生成方法签名 : 进入 AndroidProject/bin/classes 目录, 使用 javah com.packagename.jni.JNITest 命令, 便生成了头文件, 该头文件引用了 jni.h, 以及定义好了对应的 Native 方法, 生成 JNIEXPORT jint JNICALL Java_com_packagename_jni_JNITest_add (JNIEnv \*, jobject, jint, jint);  
@@ -80,7 +80,9 @@ jint Java_com_packagename_jni_JNITest_add(JNIEnv * env, jobject obj, jint x, jin
 }  
 ~~~
 
-- c. 编写 Android.mk 文件 :
+#### 3.2 生成.so文件
+
+Android.mk 文件：
 
 ~~~ C++
 LOCAL_PATH := $(call my-dir)    
@@ -93,7 +95,7 @@ LOCAL_SRC_FILES := hello-jni.c
 include $(BUILD_SHARED_LIBRARY)  
 ~~~  
 
-  文件内容解释：
+- 文件内容解释：
 
   **获取当前文件内容** : $(call my-dir) 是编译器中的宏方法, 调用该宏方法, 就会返回前的目录路径;
 
@@ -109,14 +111,14 @@ include $(BUILD_SHARED_LIBRARY)
 
   **静态库引入** : NDK的platform中有很多 ".a" 结尾的动态库, 我们编译动态库的时候, 可以将一些静态库引入进来;
 
-- d. 生成 动态库 so 文件 : 进入 Android.mk 所在目录, 在该目录执行ndk下的ndk-build命令;
-- e. Java代码加载动态库 : 在 Java 代码中调用该类的类前面, 在类的一开始, 不在方法中, 加入
+- 生成 动态库 so 文件 : 进入 Android.mk 所在目录, 在该目录执行ndk下的ndk-build命令;
+- Java代码加载动态库 : 在 Java 代码中调用该类的类前面, 在类的一开始, 不在方法中, 加入
 
 ~~~ C++
 static{ System.loadLibrary("hello"); } ;
 ~~~
 
- Android.mk 文件内容为（不写这个文件也可以）:
+- Application.mk 文件内容为（不写这个文件也可以）:
 
 ~~~ Java
 APP_STL := stlport_static
@@ -127,7 +129,7 @@ APP_ABI := all
 <!-- 指定图片大小有问题 -->
 
 <!-- [![Pure CSS Happy Hacking Keyboard](/assets/img/jni_structure.png)](http://codepen.io/P233/pen/qEagi) -->
-![Eclipse JNI目录结构](/assets/img/jni_structure.png)
+<!-- ![Eclipse JNI目录结构](/assets/img/jni_structure.png) -->
 
 [这篇文章](http://blog.csdn.net/hejinjing_tom_com/article/details/8125648)是使用javah导出头文件过程中，常见错误和解决办法，这里做一个记录。
 
@@ -176,55 +178,59 @@ if (alen > 0) {
    - a. 获取Java中String类型的class对象 : 参数 : 上下文环境 env, String类完整路径 ;
 
 ~~~ Javascript
-    jclass clsstring = (*env)->FindClass(env, "java/lang/String");  
+jclass clsstring = (*env)->FindClass(env, "java/lang/String");  
 ~~~
    - b.创建Java字符串 : 使用 NewStringUTF 方法;
 
 ~~~ Javascript
-    jstring strencode = (*env)->NewStringUTF(env, "GB2312");  
+jstring strencode = (*env)->NewStringUTF(env, "GB2312");  
 ~~~   
    - c.获取String中的getBytes()方法 : 参数介绍 ① env 上下文环境 ② 完整的类路径 ③ 方法名 ④ 方法签名, 方法签名 Ljava/lang/String; 代表参数是String字符串, [B  中括号表示这是一个数组, B代表byte类型, 返回值是一个byte数组;
 
 ~~~ Javascript
-    jmethodID mid = (*env)->GetMethodID(env, clsstring, "getBytes",  
-        "(Ljava/lang/String;)[B");  
+jmethodID mid = (*env)->GetMethodID(env, clsstring, "getBytes",  
+    "(Ljava/lang/String;)[B");  
 ~~~       
    - d. 获取数组的长度 :
 
 ~~~ Javascript
-    jsize alen = (*env)->GetArrayLength(env, barr);  
+jsize alen = (*env)->GetArrayLength(env, barr);  
 ~~~
    - e. 获取数组元素 : 获取数组中的所有的元素 , 存放在 jbyte*数组中;
 
 ~~~ Javascript
-    jbyte* ba = (*env)->GetByteArrayElements(env, barr, JNI_FALSE);  
+jbyte* ba = (*env)->GetByteArrayElements(env, barr, JNI_FALSE);  
 ~~~
    - f.数组拷贝: 将Java数组中所有元素拷贝到C的char*数组中, 注意C语言数组结尾要加一个 '\0';
 
 ~~~ Javascript
-    if (alen > 0) {  
-        rtn = (char*) malloc(alen + 1); //new   char[alen+1]; "\0"  
-        memcpy(rtn, ba, alen);  
-        rtn[alen] = 0;  
-    }  
+if (alen > 0) {  
+    rtn = (char*) malloc(alen + 1); //new   char[alen+1]; "\0"  
+    memcpy(rtn, ba, alen);  
+    rtn[alen] = 0;  
+}  
 ~~~
    - g.释放内存 :
 
 ~~~ Javascript
-    (*env)->ReleaseByteArrayElements(env, barr, ba, 0); //释放内存
+(*env)->ReleaseByteArrayElements(env, barr, ba, 0); //释放内存
 ~~~
 
 ### 5.JNI方法命名规则(标准JNI规范)
 
-- **JNI实现的方法与Java中Native方法的映射关系 :** 使用方法名进行映射, 可以使用 javah 工具进入 bin/classes 目录下执行命令, 即可生成头文件;
+- **JNI实现的方法与Java中Native方法的映射关系 :**
+
+  使用方法名进行映射, 可以使用javah工具进入bin/classes目录下执行命令, 即可生成头文件;
 
 - **JNI方法参数介绍:**
 
-  参数① : 第一个参数是JNI接口指针 JNIEnv;
+  参数① : 第一个参数是JNI接口指针JNIEnv;
 
   参数② : 如果Native方法是非静态的, 那么第二个参数就是对Java对象的引用, 如果Native方法是静态的, 那么第二个参数就是对Java类的Class对象的引用;
 
-- **JNI方法名规范:**  返回值 + Java前缀 + 全路径类名 + 方法名 + 参数① JNIEnv + 参数② jobject + 其它参数;
+- **JNI方法名规范:**  
+
+  返回值+Java前缀+全路径类名+方法名+参数① JNIEnv+参数② jobject+其它参数;
 
   注意分隔符 : Java前缀 与 类名 以及类名之间的包名 和 方法名之间 使用 "\_" 进行分割;
 
@@ -234,7 +240,7 @@ if (alen > 0) {
 
   JNI方法: jint Java_shuliang_han_Hello_hello(JNIEnv * env, jobject obj, jstring str, jint i);
 
-- 声明 静态 方法 :
+- **声明 静态 方法 :**
 
   Native方法 : public static int hello (String str, int i);
 
@@ -261,38 +267,40 @@ if (alen > 0) {
 
 - 1.这个是我现在项目中使用的方法，在Github上有这个工程，这种方式是使用JNI生成一个与设备相关的密码，可以将该密码作为AES的密钥。[链接地址](https://github.com/MasonLiuChn/AndroidUltimateEncrypt)
 
-- 2.网上还有一种方式是由JNI生成keyValue和iv，Java层使用：
+- 2.网上还有一种方式是由JNI生成keyValue和iv，Java层使用：[链接地址](http://blog.csdn.net/why_2012_gogo/article/details/40055245)
+
+主要代码：
 
 ~~~ Java
-    static {
-    	System.loadLibrary("cwtlib");
-    	keyValue = getKeyValue();
-    	iv = getIv();
+static {
+	System.loadLibrary("cwtlib");
+	keyValue = getKeyValue();
+	iv = getIv();
 
-    	if(null != keyValue &&
-    			null != iv) {
-    		KeyGenerator kgen;  
-            try {  
-                kgen = KeyGenerator.getInstance("AES");  
-                kgen.init(128, new SecureRandom(keyValue));  
-                key = kgen.generateKey();  
-                paramSpec = new IvParameterSpec(iv);  
-                ecipher = Cipher.getInstance("AES/CBC/PKCS5Padding");         
-            } catch (NoSuchAlgorithmException e) {  
-            } catch (NoSuchPaddingException e) {  
-            }  
-    	}
-    }   
+	if(null != keyValue &&
+		null != iv) {
+		KeyGenerator kgen;  
+        try {  
+            kgen = KeyGenerator.getInstance("AES");  
+            kgen.init(128, new SecureRandom(keyValue));  
+            key = kgen.generateKey();  
+            paramSpec = new IvParameterSpec(iv);  
+            ecipher = Cipher.getInstance("AES/CBC/PKCS5Padding");         
+        } catch (NoSuchAlgorithmException e) {  
+        } catch (NoSuchPaddingException e) {  
+        }  
+	}
+}   
 
-    public static native byte[] getKeyValue();
-    public static native byte[] getIv();
+public static native byte[] getKeyValue();
+public static native byte[] getIv();
 ~~~
 
-  这种方式，在android app程序完全退出后，再进入该app时，之前加密好的字符串无法解密。
+  这种方式，在android app程序完全退出后，再进入该app时，之前加密好的字符串**无法解密。**
 
-- 3.还有一种是直接由C或C++实现AES整个算法，网上代码并不知道靠不靠谱
+- 3.还有一种是直接由C或C++实现AES整个算法，直接使用网上代码并不知道靠不靠谱
 
-  所以，android上最好还是使用第一种方法
+  所以，我们项目最终使用了第一种方法
 
 ### 7.JNI混淆问题
 
@@ -301,13 +309,16 @@ if (alen > 0) {
   如果有的话，这些就不能混淆
 
 ~~~ Java
-    //保留jni的回调类
-    -keep class com.your.jnicallback.class { *; }
-    //这个不用更改，直接复制就可以
-    -keepclasseswithmembernames class * {
-        native <methods>;
-    }
+//保留jni的回调类
+-keep class com.your.jnicallback.class { *; }
+//这个不用更改，直接复制就可以
+-keepclasseswithmembernames class * {
+    native <methods>;
+}
 ~~~
 
 ### 8.总结
 android 实现JNI入门并不难，笔者也刚刚入门，但要深入了解还是需要很长的路要走。
+
+#### 8.1 更新内容
+在本文中最终使用第6点中的第一种方式，但原方法在4.0.4手机上遇到兼容性问题，详情请看我的这篇博客[使用JNI获取publickey实现](http://agehua.github.io/2016/JNI-get-publickey)
